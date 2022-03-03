@@ -145,6 +145,10 @@ class Colorizer {
      * @returns {{R: Number, G: number, B: number}}
      */
     hexToRgb(color) {
+			let rgbObj = this.getRGB(color);
+			if(rgbObj) {
+				return rgbObj;
+			}
         let hex = color.slice(1);
 
         if (hex.length === 3) {
@@ -160,7 +164,17 @@ class Colorizer {
         /* eslint-enable */
 
         return { R, G, B };
-    }
+		}
+		
+		getRGB(str){
+			var match = str.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+			return match ? {
+				R: match[1],
+				G: match[2],
+				B: match[3]
+			} : null;
+		}
+		
 
     /**
      * Expands a three character hex code to six characters.

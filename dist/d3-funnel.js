@@ -5064,7 +5064,7 @@ var Colorizer = /*#__PURE__*/function () {
   function Colorizer() {
     _classCallCheck(this, Colorizer);
 
-    this.hexExpression = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
+    this.hexExpression = /(^#([0-9a-f]{3}|[0-9a-f]{6})$)|(^rgb)/i;
     this.instanceId = null;
     this.labelFill = null;
     this.scale = null;
@@ -5222,9 +5222,23 @@ var Colorizer = /*#__PURE__*/function () {
      * @returns {{R: Number, G: number, B: number}}
      */
 
-  }, {
+  },{
+		key: "getRGB",
+		value: function(str) {
+			var match = str.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+			return match ? {
+				R: match[1],
+				G: match[2],
+				B: match[3]
+			} : null;
+		}
+	}, {
     key: "hexToRgb",
     value: function hexToRgb(color) {
+			var rgbObj = this.getRGB(color);
+			if(rgbObj) {
+				return rgbObj;
+			}
       var hex = color.slice(1);
 
       if (hex.length === 3) {
